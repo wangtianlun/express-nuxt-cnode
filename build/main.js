@@ -219,7 +219,7 @@ module.exports = {
   /*
   ** Global CSS
   */
-  css: ['~/assets/css/main.css'],
+  css: ['~/assets/css/main.css', '~/assets/css/main.scss'],
   /*
   ** Add axios globally
   */
@@ -230,13 +230,18 @@ module.exports = {
     */
     extend: function extend(config, ctx) {
       if (ctx.isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        });
+        // config.module.rules.push({
+        //   enforce: 'pre',
+        //   test: /\.(js|vue)$/,
+        //   loader: 'eslint-loader',
+        //   exclude: /(node_modules)/
+        // })
       }
+    },
+
+
+    styleResources: {
+      scss: './assets/css/variables.scss'
     }
   }
 };
