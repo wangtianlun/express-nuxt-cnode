@@ -1,31 +1,28 @@
 <template>
   <div>
+    <nav-bar />
     <nuxt/>
-    <my-footer/>
   </div>
 </template>
 
 <script>
-import MyFooter from '~/components/Footer.vue'
+import NavBar from '~/components/common/navbar';
 
 export default {
   components: {
-    MyFooter
+    NavBar
   }
 }
 </script>
 
-<style>
-.container
-{
+<style lang="scss" scoped>
+.container {
   margin: 0;
   width: 100%;
-  padding: 100px 0;
   text-align: center;
 }
 
-.button, .button:visited
-{
+.button, .button:visited {
   display: inline-block;
   color: black;
   letter-spacing: 1px;
