@@ -1,5 +1,5 @@
 {
-  "name": "jumaidan",
+  "name": "express-nuxt-cnode",
   "version": "1.0.0",
   "description": "Nuxt.js project",
   "author": "苏灿 <810394177@qq.com>",
@@ -31,6 +31,8 @@
     "eslint-plugin-node": "^5.1.1",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "node-sass": "^4.8.1",
+    "sass-loader": "^6.0.7"
   }
 }
