@@ -43,11 +43,20 @@
                 <span class="last_active_time">{{ topic.create_at }}</span>
               </a>
               <div class="topic_title_wrapper">
-                <span :class="{ 'put_top': topic.top }">置顶</span>
+                <span :class="{ 'put_top': topic.top }">
+                  <template v-if="topic.good">置顶</template>
+                  <template v-else>
+                    <template v-if="topic.tab === 'share'">分享</template>
+                    <template v-else-if="topic.tab === 'ask'">问答</template>
+                    <template v-else-if="topic.tab === 'job'">招聘</template>
+                    <template v-else-if="topic.tab === 'dev'">测试</template>
+                  </template>
+                </span>
                 <a :href="cnodeHostName + '/topic/' + topic.id" class="topic-title" >{{ topic.title }}</a>
               </div>
             </div>
           </div>
+          <pagination :total-page="totalPage" :current-page="page" :page-click="handlePageClick"/>
         </div>
       </div>
     </div>
@@ -56,12 +65,14 @@
 
 <script>
 import axios from '~/plugins/axios'
+import pagination from '~/components/common/pagination'
 
 export default {
   async asyncData () {
     let { data } = await axios.get('/api/topics?page=1&tab=&limit=40')
     return { topics: data }
   },
+
   head () {
     return {
       title: 'CNode: Node.js专业中文社区'
@@ -73,12 +84,36 @@ export default {
       page: 1,
       tab: '',
       limit: 40,
-      cnodeHostName: 'https://cnodejs.org'
+      cnodeHostName: 'https://cnodejs.org',
+      totalPage: 95
     }
+  },
+
+  methods: {
+    getTopicsInfo() {
+      const self = this;
+
+      axios.get(`/api/topics?page=${this.page}&tab=&limit=40`)
+        .then(res => {
+          self.topics = res.data
+        })
+        .catch(ex => {
+          console.error(ex)
+        })
+    },
+
+    handlePageClick(page) {
+      this.page = page;
+      this.getTopicsInfo();
+    },
   },
 
   mounted () {
     
+  },
+
+  components: {
+    pagination,
   }
 }
 </script>
@@ -152,6 +187,16 @@ export default {
                 display: inline-block;
                 width: 70px;
                 text-align: center;
+
+                .count_of_replies {
+                  color: #9e78c0;
+                  font-size: 14px;
+                }
+
+                .count_of_visits {
+                  font-size: 10px;
+                  color: #b4b4b4;
+                }
               }
 
               .last_time {
@@ -182,11 +227,17 @@ export default {
                 white-space: nowrap;
                 .put_top {
                   background: #80bd01;
-                  padding: 2px 4px;
                   color: #fff;
+                }
+                
+                span {
+                  background-color: #e5e5e5;
+                  color: #999;
                   font-size: 12px;
+                  padding: 2px 4px;
                   border-radius: 3px;
                 }
+
                 a.topic-title {
                   text-decoration: none;
                   text-overflow: ellipsis;
