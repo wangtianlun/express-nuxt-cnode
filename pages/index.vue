@@ -29,22 +29,22 @@
         </div>
         <div class="inner">
           <div class="topic-list">
-            <div class="cell clearfix">
-              <nuxt-link class="user_avatar" to="/user">
-                <img src="https://avatars3.githubusercontent.com/u/327019?v=4&s=120" alt="">
-              </nuxt-link>
+            <div class="cell clearfix" v-for="topic in topics">
+              <a class="user_avatar" :href="cnodeHostName + '/user/' + topic.author.loginname">
+                <img :src="topic.author.avatar_url" alt="">
+              </a>
               <span class="reply_count">
-                <span class="count_of_replies" title="回复数">9</span>
+                <span class="count_of_replies" title="回复数">{{ topic.reply_count }}</span>
                 <span class="count_seperator">/</span>
-                <span class="count_of_visits" title="点击数">3228</span>
+                <span class="count_of_visits" title="点击数">{{ topic.visit_count }}</span>
               </span>
               <a href="" class="last_time">
                 <img class="user_small_avatar" src="https://avatars1.githubusercontent.com/u/23202919?v=4&s=120">
-                <span class="last_active_time">1天前</span>
+                <span class="last_active_time">{{ topic.create_at }}</span>
               </a>
               <div class="topic_title_wrapper">
-                <span class="put_top">置顶</span>
-                <a href="" class="topic-title" > 请不要让薅羊毛的帖子入侵技术社区。</a>
+                <span :class="{ 'put_top': topic.top }">置顶</span>
+                <a :href="cnodeHostName + '/topic/' + topic.id" class="topic-title" >{{ topic.title }}</a>
               </div>
             </div>
           </div>
@@ -59,14 +59,27 @@ import axios from '~/plugins/axios'
 
 export default {
   async asyncData () {
-    let { data } = await axios.get('/api/users')
-    return { users: data }
+    let { data } = await axios.get('/api/topics?page=1&tab=&limit=40')
+    return { topics: data }
   },
   head () {
     return {
-      title: 'Users'
+      title: 'CNode: Node.js专业中文社区'
     }
   },
+
+  data() {
+    return {
+      page: 1,
+      tab: '',
+      limit: 40,
+      cnodeHostName: 'https://cnodejs.org'
+    }
+  },
+
+  mounted () {
+    
+  }
 }
 </script>
 
@@ -121,7 +134,7 @@ export default {
             .cell {
               border-top: 1px solid #f0f0f0;
               background: #fff;
-              padding-right: 10px;
+              padding: 10px;
               font-size: 14px;
 
               .user_avatar {
