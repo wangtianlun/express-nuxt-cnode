@@ -3,7 +3,7 @@ import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import { Nuxt, Builder } from 'nuxt'
 
-const morgan = require('morgan')
+const logger = require('morgan')
 
 import api from './api'
 
@@ -13,10 +13,20 @@ const port = process.env.PORT || 3000
 
 app.set('port', port)
 
-app.use(morgan('combined'))
+if (process.env.NOD_ENV === 'development') {
+	app.use(logger('combined'))
+}
+
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cookieParser())
+
+app.all('*', (req, res, next) => {
+	res.header('Access-Control-Allow-Origin', '*')
+	res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With')
+	res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS')
+	next()
+})
 
 // Import API Routes
 app.use('/api', api)

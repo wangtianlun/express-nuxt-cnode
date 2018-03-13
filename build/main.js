@@ -91,7 +91,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-var morgan = __webpack_require__(5);
+var logger = __webpack_require__(5);
 
 
 
@@ -101,10 +101,20 @@ var port = process.env.PORT || 3000;
 
 app.set('port', port);
 
-app.use(morgan('combined'));
+if (process.env.NOD_ENV === 'development') {
+	app.use(logger('combined'));
+}
+
 app.use(__WEBPACK_IMPORTED_MODULE_2_body_parser___default.a.urlencoded({ extended: false }));
 app.use(__WEBPACK_IMPORTED_MODULE_2_body_parser___default.a.json());
 app.use(__WEBPACK_IMPORTED_MODULE_1_cookie_parser___default()());
+
+app.all('*', function (req, res, next) {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With');
+	res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
+	next();
+});
 
 // Import API Routes
 app.use('/api', __WEBPACK_IMPORTED_MODULE_4__api__["a" /* default */]);
@@ -118,8 +128,8 @@ var nuxt = new __WEBPACK_IMPORTED_MODULE_3_nuxt__["Nuxt"](config);
 
 // Build only in dev mode
 if (config.dev) {
-  var builder = new __WEBPACK_IMPORTED_MODULE_3_nuxt__["Builder"](nuxt);
-  builder.build();
+	var builder = new __WEBPACK_IMPORTED_MODULE_3_nuxt__["Builder"](nuxt);
+	builder.build();
 }
 
 // Give nuxt middleware to express
