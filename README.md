@@ -18,5 +18,8 @@ $  npm run dev
 $ npm run build
 ```
 
+## 总结
+	如果本项目能够帮助到你，就点一下star吧。。。
+
 ## TODO
 紧锣密鼓的施工中
