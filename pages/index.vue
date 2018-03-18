@@ -4,16 +4,14 @@
       <div class="panel">
         <div class="inner">
           <p>CNode：Node.js专业中文社区</p>
-          <div>
+          <div style="margin-bottom: 5px;">
             您可以
-            <nuxt-link to="signin">登录</nuxt-link>
+            <nuxt-link to="signin" class="signin">登录</nuxt-link>
             或
-            <nuxt-link to="signup">注册</nuxt-link>，
-            也可以<br/>
-            <a href="/auth/github">
-              通过GitHub登录
-            </a>
+            <nuxt-link to="signup" class="signup">注册</nuxt-link>，
+            也可以
           </div>
+          <a href="/auth/github" class="login-by-github">通过GitHub登录</a>
         </div>
       </div>
     </div>
@@ -60,6 +58,7 @@
         </div>
       </div>
     </div>
+    <div v-if="showBackToTop" id="backtotop">回到顶部</div>
   </section>
 </template>
 
@@ -85,7 +84,8 @@ export default {
       tab: '',
       limit: 40,
       cnodeHostName: 'https://cnodejs.org',
-      totalPage: 95
+      totalPage: 95,
+      showBackToTop: false,
     }
   },
 
@@ -109,7 +109,17 @@ export default {
   },
 
   mounted () {
-    
+    const self = this;
+
+    window.addEventListener('scroll', function () {
+      const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+
+      if (scrollTop > 200) {
+        self.showBackToTop = true;
+      } else {
+        self.showBackToTop = false;
+      }
+    })
   },
 
   components: {
@@ -264,10 +274,54 @@ export default {
       margin-bottom: 20px;
       .panel {
         background: #fff;
+
+        .inner {
+          padding: 10px;
+          border-radius: 0 0 3px 3px;
+          font-size: 12px;
+
+          .signin, .signup {
+            color: #778087;
+          }
+        }
+
         p {
           margin: 0;
+          font-size: 14px;
+          word-break: break-word;
+          margin: 0 0 20px;
+        }
+
+        .login-by-github {
+          display: inline-block;
+          padding: 7px 10px;
+          background: #5bc0de;
+          cursor: pointer;
+          border: none;
+          margin: 0;
+          transition: all .2s ease-in-out;
+          letter-spacing: 2px;
+          border-radius: 3px;
+          color: #fff;
+          text-decoration: none;
+          font-size: 14px;
         }
       }
+    }
+
+    #backtotop {
+      position: fixed;
+      top: 400px;
+      right: 0;
+      display: block;
+      background: #fff;
+      border-radius: 12px 0 0 12px;
+      padding: 12px 0 12px 5px;
+      color: gray;
+      width: 24px;
+      cursor: pointer;
+      text-align: center;
+      z-index: 20;
     }
   }
 </style>
