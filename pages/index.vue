@@ -83,7 +83,7 @@ export default {
       page: 1,
       tab: '',
       limit: 40,
-      cnodeHostName: 'https://cnodejs.org',
+      cnodeHostName: 'http://localhost:3000',
       totalPage: 95,
       showBackToTop: false,
     }
@@ -93,7 +93,9 @@ export default {
     getTopicsInfo() {
       const self = this;
 
-      axios.get(`/api/topics?page=${this.page}&tab=&limit=40`)
+
+
+      axios.get(`/api/topic/`)
         .then(res => {
           self.topics = res.data
         })
